@@ -1,0 +1,62 @@
+services:
+  # ── 1. API Backend ─────────────────────────────────────
+  - type: web
+    name: sales-machine-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    startCommand: uvicorn backend.api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: CLAUDE_API_KEY
+        sync: false
+      - key: META_ACCESS_TOKEN
+        sync: false
+      - key: META_AD_ACCOUNT
+        sync: false
+      - key: WP_URL
+        sync: false
+      - key: WP_USER
+        sync: false
+      - key: WP_PASS
+        sync: false
+      - key: HF_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        sync: false          # cole a URL do Supabase aqui
+      - key: REDIS_URL
+        sync: false          # cole a URL do Upstash aqui
+
+  # ── 2. Celery Worker ───────────────────────────────────
+  - type: worker
+    name: sales-machine-worker
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    startCommand: celery -A backend.tasks.celery_app.celery worker --loglevel=info --concurrency=2
+    envVars:
+      - key: CLAUDE_API_KEY
+        sync: false
+      - key: META_ACCESS_TOKEN
+        sync: false
+      - key: META_AD_ACCOUNT
+        sync: false
+      - key: WP_URL
+        sync: false
+      - key: WP_USER
+        sync: false
+      - key: WP_PASS
+        sync: false
+      - key: HF_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+
+  # ── 3. Streamlit Frontend ──────────────────────────────
+  - type: web
+    name: sales-machine-frontend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    startCommand: streamlit run frontend/app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    envVars:
+      - key: BACKEND_URL
+        sync: false          # cole a URL pública do serviço sales-machine-api
