@@ -2,7 +2,7 @@
   - type: web
     name: sales-machine-api
     runtime: docker
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./Dockerfile.backend
     plan: free
     envVars:
       - key: CLAUDE_API_KEY
@@ -14,7 +14,7 @@
   - type: web
     name: sales-machine-frontend
     runtime: docker
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./Dockerfile.frontend
     plan: free
     envVars:
       - key: BACKEND_URL
