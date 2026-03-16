@@ -1,59 +1,21 @@
-services:
-  # ── 1. API Backend ─────────────────────────────────────
+﻿services:
   - type: web
     name: sales-machine-api
     runtime: docker
     dockerfilePath: ./Dockerfile
+    plan: free
     envVars:
       - key: CLAUDE_API_KEY
-        sync: false
-      - key: META_ACCESS_TOKEN
-        sync: false
-      - key: META_AD_ACCOUNT
-        sync: false
-      - key: WP_URL
-        sync: false
-      - key: WP_USER
-        sync: false
-      - key: WP_PASS
-        sync: false
-      - key: HF_TOKEN
-        sync: false
-      - key: DATABASE_URL
-        sync: false          # cole a URL do Supabase aqui
-      - key: REDIS_URL
-        sync: false          # cole a URL do Upstash aqui
-
-  # ── 2. Celery Worker ───────────────────────────────────
-  - type: worker
-    name: sales-machine-worker
-    runtime: docker
-    dockerfilePath: ./Dockerfile
-    envVars:
-      - key: CLAUDE_API_KEY
-        sync: false
-      - key: META_ACCESS_TOKEN
-        sync: false
-      - key: META_AD_ACCOUNT
-        sync: false
-      - key: WP_URL
-        sync: false
-      - key: WP_USER
-        sync: false
-      - key: WP_PASS
-        sync: false
-      - key: HF_TOKEN
         sync: false
       - key: DATABASE_URL
         sync: false
       - key: REDIS_URL
         sync: false
-
-  # ── 3. Streamlit Frontend ──────────────────────────────
   - type: web
     name: sales-machine-frontend
     runtime: docker
     dockerfilePath: ./Dockerfile
+    plan: free
     envVars:
       - key: BACKEND_URL
-        sync: false          # cole a URL pública do serviço sales-machine-api
+        sync: false
